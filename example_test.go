@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/sawadashota/httpclient-test"
+	"github.com/sawadashota/httprequesttest-go"
 )
 
 // RoundTripFunc .
@@ -41,7 +41,7 @@ func client(t *testing.T) *http.Client {
 		if req.Header.Get("Authorization") != "Bearer ok_token" {
 			return &http.Response{
 				StatusCode: http.StatusUnauthorized,
-				Body:       nil,
+				Body:       ioutil.NopCloser(&bytes.Buffer{}),
 				Header:     make(http.Header),
 			}
 		}
@@ -59,7 +59,7 @@ func errorClient(t *testing.T) *http.Client {
 	return NewTestClient(func(req *http.Request) *http.Response {
 		return &http.Response{
 			StatusCode: http.StatusInternalServerError,
-			Body:       nil,
+			Body:       ioutil.NopCloser(&bytes.Buffer{}),
 			Header:     make(http.Header),
 		}
 	})
